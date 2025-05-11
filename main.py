@@ -13,8 +13,17 @@ MODEL_ID = os.getenv("HF_MODEL")
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_ID)
+model.eval()
 
-id2label = {0: "analyze", 1: "context", 2: "explain", 3: "fact_check", 4: "joke", 5: "opinion", 6: "task_instruction"}
+id2label = model.config.id2label
+
+def classify_intent(text):
+	# tokenize input
+	inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
+	with torch.no_grad():
+		logits = model(**inputs).logits
+		predicted_intent = torch.argmax(logits, dim=-1).item()
+		return id2label[predicted_intent]
 
 # bot
 intents = discord.Intents.default()
