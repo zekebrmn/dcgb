@@ -7,7 +7,7 @@ A Python-based Discord bot to mimic the functionality of xAI's Grok
 ### 1. Clone the repository
 
 ```bash
-git clone
+git clone https://github.com/zekebrmn/dcgb.git
 cd dcgb
 ```
 
